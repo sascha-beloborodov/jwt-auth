@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
+use Carbon\Carbon;
 use Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterFormRequest;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -33,11 +37,50 @@ class AuthController extends Controller
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+    }
+
+
+    public function register(RegisterFormRequest $req)
+    {
+        User::create([
+            'name' => $req->json('name'),
+            'email' => $req->json('email'),
+            'password' => bcrypt($req->json('password'))
+        ]);
+    }
+
+    public function signin(Request $request)
+    {
+        try {
+            $token = \JWTAuth::attempt($request->only('email', 'password'), [
+                'exp' => Carbon::now()->addWeek()->timestamp,
+            ]);
+        } catch (JWTException $e) {
+            return response()->json([
+                'error' => 'Could not authenticate',
+            ], 500);
+        }
+
+        if (!$token) {
+            return response()->json([
+                'error' => 'Could not authenticate',
+            ], 401);
+        } else {
+            $data = [];
+            $meta = [];
+
+            $data['name'] = $request->user()->name;
+            $meta['token'] = $token;
+
+            return response()->json([
+                'data' => $data,
+                'meta' => $meta
+            ]);
+        }
     }
 
     /**

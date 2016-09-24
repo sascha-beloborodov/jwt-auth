@@ -10,7 +10,9 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+require('laravel-elixir-vueify');
 
-elixir(function(mix) {
-    mix.sass('app.scss');
-});
+ elixir(function(mix) {
+     mix.browserify('app.js');
+     mix.sass('app.scss');
+ });
