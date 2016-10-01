@@ -9,9 +9,9 @@
 
 </head>
 <body>
-    <div class="container">
-        <div id="app"></div>
-    </div>
-    <script src="/js/app.js"></script>
+<div class="container">
+    <div id="app"></div>
+</div>
+<script src="/js/app.js"></script>
 </body>
 </html>

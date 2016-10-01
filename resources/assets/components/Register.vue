@@ -21,6 +21,12 @@
         <input type="password" id="password" class="form-control" v-model="password" required>
         <span class="help-block" v-if="error && response.password">{{ response.password }}</span>
     </div>
+    <div class="form-group" v-bind:class="{ 'has-error': error && response.password_confirmation }">
+        <label for="password_confirmation">Password confirm</label>
+        <input type="password" id="password_confirmation" class="form-control" v-model="password_confirmation" required>
+        <span class="help-block" v-if="error && response.password_confirmation">{{ response.password_confirmation }}</span>
+    </div>
+
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
 
@@ -34,6 +40,7 @@ export default {
             name: null,
             email: null,
             password: null,
+            password_confirmation: null,
             success: false,
             error: false,
             response: null
@@ -41,8 +48,8 @@ export default {
     },
     methods: {
         register(event) {
-            event.preventDefault()
-            auth.register(this, this.name, this.email, this.password)
+            event.preventDefault();
+            auth.register(this, this.name, this.email, this.password, this.password_confirmation)
         }
     }
 }

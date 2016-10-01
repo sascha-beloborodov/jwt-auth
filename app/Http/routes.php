@@ -31,3 +31,7 @@ Route::group(['middleware' => ['api']], function () {
     });
 
 });
+//
+//Route::auth();
+//
+//Route::get('/home', 'HomeController@index');

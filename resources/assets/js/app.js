@@ -7,7 +7,7 @@ Vue.use(VueResource);
 var aaa = Vue.http.headers;
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.getElementsByName('csrf-token')[0].getAttribute('content');
 Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
-Vue.http.options.root = 'http://localhost:8000';
+Vue.http.options.root = 'http://jwt-lara.loc/';
 
 import App from '../components/App.vue';
 import Dashboard from '../components/Dashboard.vue';
